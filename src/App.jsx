@@ -1,18 +1,21 @@
 import {
   OrbitControls,
   PerspectiveCamera,
-  SpotLight,
-  useHelper,
 } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { MeshBasicMaterial, SpotLightHelper } from 'three';
 import { Floor } from './Floor';
 import { Walls } from './Walls';
+import { WallsBlack } from './WallsBlack';
 import { Toitoi } from './Toitoi';
 import { Neon } from './Neon';
 import './App.css';
-import { Suspense, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
+import { gsap } from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+
+gsap.registerPlugin(MotionPathPlugin);
 
 function Lights({ vec = new Vector3([0,0,-10]), ...props }) {
   const light = useRef()
@@ -21,7 +24,6 @@ function Lights({ vec = new Vector3([0,0,-10]), ...props }) {
     light.current.target.position.lerp(vec.set(0,0 , -15), 0.1)
     light.current.target.updateMatrixWorld()
   })
-  useHelper(light, SpotLightHelper, 'cyan');
   return <spotLight ref={light}
     intensity={2}
     position={[0, 15, -5]}
@@ -33,13 +35,14 @@ function Lights({ vec = new Vector3([0,0,-10]), ...props }) {
     angle={0.2}
     penumbra={0.1}
     shadow-bias={-0.001}
-  />;
+    />;
 }
+
 function Room() {
   return (
     <>
       <OrbitControls />
-      <orthographicCamera fov={90} />
+    <perspectiveCamera/>
       <spotLight
         color={'#66ffff'}
         intensity={0.5}
@@ -54,18 +57,19 @@ function Room() {
         position={[6, 4, 10]}
         angle={5}
         penumbra={1}
-      />
+        />
 
+        {/* <CamMove/> */}
       <Toitoi />
       <Lights />
       <Floor />
-      <Walls />
-      <Neon />
+      <WallsBlack/>
+      {/* <Walls /> */}
+      <Neon  />
     </>
   );
 }
 let c = <Canvas> </Canvas>;
-console.log(c);
 
 export default function App() {
   return (

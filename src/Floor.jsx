@@ -1,8 +1,16 @@
 // import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { MeshReflectorMaterial } from '@react-three/drei';
+import { useLoader } from '@react-three/fiber';
 import { useRef } from 'react';
+import { TextureLoader } from 'three';
 
 export function Floor() {
+  const [roughness, normal, color, height] = useLoader(TextureLoader, [
+    "./textures/checkers/vintage-roughness.png",
+    "./textures/checkers/vintage-normal-ogl.png",
+    "./textures/checkers/vintage-albedo.png",
+    "./textures/checkers/vintage-height.png",
+  ]);
   const box = useRef();
 
   return (
@@ -21,6 +29,9 @@ export function Floor() {
         depthToBlurRatioBias={0.25} // Adds a bias factor to the depthTexture before calculating the blur amount [blurFactor = blurTexture * (depthTexture + bias)]. It accepts values between 0 and 1, default is 0.25. An amount > 0 of bias makes sure that the blurTexture is not too sharp because of the multiplication with the depthTexture
         distortion={1}
         reflectorOffset={0.2}
+        normalMap={normal}
+        map={color}
+        roughnessMap={roughness}
       />
     </mesh>
   );

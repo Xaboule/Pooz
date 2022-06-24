@@ -1,9 +1,10 @@
 import { useGLTF } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
+import { useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
 
-export function Toitoi(){
 
+export function Toitoi(){
   const gltf = useLoader(GLTFLoader, './untitled.glb')
 
   // useEffect(() => {
